@@ -27,13 +27,13 @@ node {
      gatlingArchive()
    }*/
 
-   stage('document') {
+   /*stage('document') {
       parallel (
 	    //code:    { buildCode() },
 		//doc:     { build 'skysail.doc' },
    	    javadoc: { buildJavadoc() }
 	  )
-   }   
+   }*/   
    
 }
 
