@@ -27,6 +27,10 @@
        name=Skysail Release Repository; \
        locations=https://raw.githubusercontent.com/evandor/skysail/master/cnf/releaserepo/index.xml; \
    ,\
+   aQute.bnd.deployer.repository.FixedIndexedRepo;  \
+       name=Skysail-Ext Release Repository; \
+       locations=https://raw.githubusercontent.com/evandor/skysail-ext/master/cnf/releaserepo/index.xml; \
+   ,\
    aQute.bnd.deployer.repository.wrapper.Plugin; \
         location = "${build}/cache/wrapper"; \
         reindex = true, \
@@ -44,16 +48,3 @@
 
 -releaserepo: Release
 -baselinerepo: Release
-
-#    aQute.bnd.deployer.repository.FixedIndexedRepo; \
-#        name=Distro; \
-#        locations=https://raw.githubusercontent.com/osgi/osgi.enroute/v1.0.0/cnf/distro/index.xml; \
-#    , \
-#    aQute.bnd.deployer.repository.FixedIndexedRepo; \
-#        name=Bndtools Hub; \
-#        locations=https://raw.githubusercontent.com/bndtools/bundle-hub/master/index.xml.gz; \
-#    , \
-#    aQute.bnd.deployer.repository.FixedIndexedRepo;  \
-#        name=Skysail Release Repo; \
-#        locations=https://raw.githubusercontent.com/evandor/skysail/master/cnf/releaserepo/index.xml; \
-#    , \
