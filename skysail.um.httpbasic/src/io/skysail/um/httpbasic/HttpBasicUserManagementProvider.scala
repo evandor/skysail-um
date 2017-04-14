@@ -8,6 +8,7 @@ import org.osgi.service.component.annotations._
 import org.osgi.service.component._
 import org.slf4j.LoggerFactory
 import io.skysail.restlet.app.ApplicationProvider
+import org.restlet.security.Verifier
 
 @Component(
   immediate = false,
@@ -22,14 +23,18 @@ class HttpBasicUserManagementProvider extends UserManagementProvider {
 
   var authorizationService: AuthorizationService = null
   def getAuthorizationService(): AuthorizationService = authorizationService
-  
+
   @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MANDATORY, target = "(name=HttpBasicUmApplication)")
-  @volatile var skysailApplication: ApplicationProvider  = null
+  @volatile var skysailApplication: ApplicationProvider = null
   def getSkysailApplication() = skysailApplication
 
   @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MANDATORY)
   @volatile var userManagementRepository: io.skysail.api.um.UserManagementRepository = null
   def getUserManagementRepository() = userManagementRepository
+
+  @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.AT_LEAST_ONE)
+  @volatile var verifiers = Set[Verifier]()
+  def getVerifiers() = verifiers
 
   @Activate
   def activate() = {

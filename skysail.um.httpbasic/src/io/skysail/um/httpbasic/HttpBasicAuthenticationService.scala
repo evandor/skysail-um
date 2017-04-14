@@ -11,6 +11,10 @@ import io.skysail.restlet.utils.ScalaLinkUtils
 import io.skysail.core.app.SkysailRootApplication
 import io.skysail.um.httpbasic.app.HttpBasicUmApplication
 import io.skysail.um.httpbasic.app.HttpBasicLoginPage
+import org.restlet.security.ChallengeAuthenticator
+import org.restlet.data.ChallengeScheme
+import io.skysail.api.um.NeverAuthenticatedAuthenticator
+import io.skysail.api.um.AlwaysAuthenticatedAuthenticator
 
 class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManagementProvider) extends AuthenticationService {
 
@@ -20,9 +24,9 @@ class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManage
 
   def getLoginPath(): String = {
     try {
-        val httpBasicLoginPageLink = ScalaLinkUtils.fromResource(
-          userManagementProvider.getSkysailApplication().getSkysailApplication(), classOf[HttpBasicLoginPage]);
-        return httpBasicLoginPageLink.getUri();
+      val httpBasicLoginPageLink = ScalaLinkUtils.fromResource(
+        userManagementProvider.getSkysailApplication().getSkysailApplication(), classOf[HttpBasicLoginPage]);
+      return httpBasicLoginPageLink.getUri();
     } catch {
       case e: Throwable => return "/" + classOf[HttpBasicUmApplication].getSimpleName() + "/v1" + SkysailRootApplication.LOGIN_PATH;
     }
@@ -37,7 +41,16 @@ class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManage
   }
 
   def getResourceAuthenticator(context: Context, authMode: AuthenticationMode): Authenticator = {
-    ???
+    authMode match {
+      case AuthenticationMode.DENY_ALL => return new NeverAuthenticatedAuthenticator(context)
+      case AuthenticationMode.PERMIT_ALL => return new AlwaysAuthenticatedAuthenticator(context)
+      case _ =>
+    }
+
+    val challengeAuthenticator = new ChallengeAuthenticator(context, ChallengeScheme.HTTP_BASIC,
+      "Skysail Realm");
+    challengeAuthenticator.setVerifier(userManagementProvider.getVerifiers().head)
+    return challengeAuthenticator;
   }
 
   def isAuthenticated(request: Request): Boolean = {
