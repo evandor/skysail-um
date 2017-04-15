@@ -49,7 +49,7 @@ class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManage
 
     val challengeAuthenticator = new ChallengeAuthenticator(context, ChallengeScheme.HTTP_BASIC,
       "Skysail Realm");
-    challengeAuthenticator.setVerifier(userManagementProvider.getVerifiers().head)
+    challengeAuthenticator.setVerifier(userManagementProvider.getVerifier())
     return challengeAuthenticator;
   }
 

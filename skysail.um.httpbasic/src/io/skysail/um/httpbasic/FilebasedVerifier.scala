@@ -9,12 +9,13 @@ import io.skysail.core.security.SecurityContext
 import org.restlet.Request
 import org.restlet.Response
 import org.restlet.data.Method
+import io.skysail.api.um.UserManagementRepository
 
-@Component(immediate = true, configurationPolicy = ConfigurationPolicy.OPTIONAL)
-class FilebasedVerifier extends SecretVerifier with Verifier {
+//@Component(immediate = true, configurationPolicy = ConfigurationPolicy.OPTIONAL)
+class FilebasedVerifier(userManagementRepository: UserManagementRepository) extends SecretVerifier with Verifier {
 
-  @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MANDATORY)
-  @volatile var userManagementRepository: io.skysail.api.um.UserManagementRepository = null
+//  @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MANDATORY)
+//  @volatile var userManagementRepository: io.skysail.api.um.UserManagementRepository = null
 
   override def verify(identifier: String, secret: Array[Char]): Int = {
     SecurityContextHolder.clearContext();

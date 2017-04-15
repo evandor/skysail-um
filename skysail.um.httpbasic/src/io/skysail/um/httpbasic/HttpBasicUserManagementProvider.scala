@@ -32,9 +32,12 @@ class HttpBasicUserManagementProvider extends UserManagementProvider {
   @volatile var userManagementRepository: io.skysail.api.um.UserManagementRepository = null
   def getUserManagementRepository() = userManagementRepository
 
-  @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.AT_LEAST_ONE)
-  @volatile var verifiers = Set[Verifier]()
-  def getVerifiers() = verifiers
+ // @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.AT_LEAST_ONE)
+ //@volatile var verifiers = Set[Verifier]()
+ // def getVerifiers() = verifiers
+  
+  var verifier = new FilebasedVerifier(userManagementRepository)
+  def getVerifier() = verifier
 
   @Activate
   def activate() = {
