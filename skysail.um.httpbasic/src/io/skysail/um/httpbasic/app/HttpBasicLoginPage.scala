@@ -31,7 +31,7 @@ class HttpBasicLoginPage extends PostEntityServerResource2[Credentials] {
 
   override def addEntity(entity: Credentials) = {}
 
-  def redirectTo(): String = {
+  override def redirectTo(): String = {
     if (app.isAuthenticated(getRequest())) {
       return "/";
     }

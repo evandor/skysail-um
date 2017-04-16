@@ -36,7 +36,7 @@ class HttpBasicUserManagementProvider extends UserManagementProvider {
  //@volatile var verifiers = Set[Verifier]()
  // def getVerifiers() = verifiers
   
-  var verifier = new FilebasedVerifier(userManagementRepository)
+  var verifier:Verifier = null
   def getVerifier() = verifier
 
   @Activate
@@ -45,6 +45,7 @@ class HttpBasicUserManagementProvider extends UserManagementProvider {
     try {
       authenticationService = new HttpBasicAuthenticationService(this);
       authorizationService = new HttpBasicAuthorizationService(this);
+      verifier = new FilebasedVerifier(userManagementRepository)
     } catch {
       case e: Throwable => {
         log.error(e.getMessage(), e);
@@ -61,6 +62,7 @@ class HttpBasicUserManagementProvider extends UserManagementProvider {
     log.info("user management provider: deactivating provider '{}'", this.getClass().getName());
     authenticationService = null;
     authorizationService = null;
+    verifier = null
   }
 
 }

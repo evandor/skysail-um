@@ -15,6 +15,13 @@ import org.restlet.security.ChallengeAuthenticator
 import org.restlet.data.ChallengeScheme
 import io.skysail.api.um.NeverAuthenticatedAuthenticator
 import io.skysail.api.um.AlwaysAuthenticatedAuthenticator
+import org.restlet.security.User
+import java.util.Base64
+import java.nio.charset.Charset
+
+object HttpBasicAuthenticationService {
+  val ANONYMOUS = "anonymous"
+}
 
 class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManagementProvider) extends AuthenticationService {
 
@@ -32,12 +39,17 @@ class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManage
     }
   }
 
-  def getLogoutPath(): String = {
-    ???
-  }
+  def getLogoutPath(): String = null
 
   def getPrincipal(request: Request): Principal = {
-    ???
+    val authorization = request.getHeaders().getFirstValue("Authorization");
+    if (authorization != null && authorization.startsWith("Basic")) {
+      val base64Credentials = authorization.substring("Basic".length()).trim();
+      val credentials = new String(Base64.getDecoder().decode(base64Credentials), Charset.forName("UTF-8"));
+      val split = credentials.split(":", 2);
+      return new User(split(0), split(1));
+    }
+    new User(HttpBasicAuthenticationService.ANONYMOUS);
   }
 
   def getResourceAuthenticator(context: Context, authMode: AuthenticationMode): Authenticator = {
@@ -53,7 +65,6 @@ class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManage
     return challengeAuthenticator;
   }
 
-  def isAuthenticated(request: Request): Boolean = {
-    ???
-  }
+  def isAuthenticated(request: Request) = !getPrincipal(request).getName().equals(HttpBasicAuthenticationService.ANONYMOUS)
+
 }
