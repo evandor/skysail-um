@@ -41,7 +41,7 @@ class HttpBasicUserManagementProvider extends UserManagementProvider {
 
   @Activate
   def activate() = {
-    log.info("user management provider: activating provider '{}'", this.getClass().getName());
+    log.info(s"USER MANAGEMENT PROVIDER: activating provider '${this.getClass().getName()}'");
     try {
       authenticationService = new HttpBasicAuthenticationService(this);
       authorizationService = new HttpBasicAuthorizationService(this);
@@ -59,7 +59,7 @@ class HttpBasicUserManagementProvider extends UserManagementProvider {
 
   @Deactivate
   def deactivate() = {
-    log.info("user management provider: deactivating provider '{}'", this.getClass().getName());
+    log.info(s"USER MANAGEMENT PROVIDER: deactivating provider '${this.getClass().getName()}'");
     authenticationService = null;
     authorizationService = null;
     verifier = null
