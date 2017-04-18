@@ -9,18 +9,18 @@ import org.slf4j.LoggerFactory
 import org.restlet.security.Role
 import java.util.Collections
 import scala.collection.JavaConverters._
-import io.skysail.um.shiro.authorization.SimpleAuthorizingRealm
+import io.skysail.um.shiro.authorization.ShiroAuthorizingRealm
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher
 import org.apache.shiro.realm.Realm
 
-class SimpleAuthorizationService(provider: ShiroBasedUserManagementProvider) extends AuthorizationService with Enroler {
+class ShiroAuthorizationService(provider: ShiroBasedUserManagementProvider) extends AuthorizationService with Enroler {
 
   val log = LoggerFactory.getLogger(this.getClass())
   
  // SkysailHashedCredentialsMatcher hashedCredetialsMatcher = new SkysailHashedCredentialsMatcher();
   //      hashedCredetialsMatcher.setCacheManager(simpleUserManagementProvider.getCacheManager());
   val hashedCredetialsMatcher = new SimpleCredentialsMatcher()
-  val authorizingRealm = new SimpleAuthorizingRealm(hashedCredetialsMatcher, provider);
+  val authorizingRealm = new ShiroAuthorizingRealm(hashedCredetialsMatcher, provider);
 
   def enrole(clientInfo: ClientInfo): Unit = {
     val subject = SecurityUtils.getSubject();

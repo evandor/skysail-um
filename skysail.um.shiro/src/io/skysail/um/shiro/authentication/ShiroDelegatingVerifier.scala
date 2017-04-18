@@ -10,7 +10,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException
 import org.apache.shiro.authc.LockedAccountException
 import org.apache.shiro.authc.AuthenticationException
 
-class SimpleDelegatingVerifier extends SecretVerifier {
+class ShiroDelegatingVerifier extends SecretVerifier {
 
   val log = LoggerFactory.getLogger(this.getClass())
 

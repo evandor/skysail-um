@@ -6,7 +6,7 @@ import org.apache.shiro.realm.Realm
 class SkysailWebSecurityManager(singleRealm: Realm) extends DefaultWebSecurityManager {
   
   setSubjectFactory(new SkysailWebSubjectFactory());
-//        setSessionManager(new SkysailWebSessionManager());
+        setSessionManager(new SkysailWebSessionManager());
 //        setCacheManager(new MemoryConstrainedCacheManager());
 //        ((ModularRealmAuthenticator)getAuthenticator()).getAuthenticationListeners().add(new AuthenticationListener(){
 //

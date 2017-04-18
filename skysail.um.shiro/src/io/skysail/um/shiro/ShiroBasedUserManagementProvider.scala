@@ -20,7 +20,7 @@ class ShiroBasedUserManagementProvider extends UserManagementProvider {
   var authenticationService: AuthenticationService = null
   def getAuthenticationService(): AuthenticationService = authenticationService
 
-  var authorizationService: SimpleAuthorizationService = null
+  var authorizationService: ShiroAuthorizationService = null
   def getAuthorizationService(): AuthorizationService = authorizationService
 
   @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MANDATORY, target = "(name=ShiroUmApplication)")
@@ -31,28 +31,22 @@ class ShiroBasedUserManagementProvider extends UserManagementProvider {
   @volatile var userManagementRepository: io.skysail.api.um.UserManagementRepository = null
   def getUserManagementRepository() = userManagementRepository
 
-  //  var verifier:Verifier = null
-  //  def getVerifier() = verifier
-
   @Activate
   def activate() = {
-
     log.info(s"USER MANAGEMENT PROVIDER: activating provider '${this.getClass().getName()}'");
     //cacheManager = new MemoryConstrainedCacheManager();
     authenticationService = new ShiroAuthenticationService(this);
-    authorizationService = new SimpleAuthorizationService(this);
+    authorizationService = new ShiroAuthorizationService(this);
     SecurityUtils.setSecurityManager(new SkysailWebSecurityManager(authorizationService.getRealm()));
   }
 
   @Deactivate
   def deactivate() = {
-
     log.info(s"USER MANAGEMENT PROVIDER: deactivating provider '${this.getClass().getName()}'");
     authenticationService = null;
     authorizationService = null;
     SecurityUtils.setSecurityManager(null);
     //cacheManager = null;
-
   }
 
   def getByUsername(username: String): SkysailUser = {

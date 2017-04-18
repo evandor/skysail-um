@@ -28,7 +28,7 @@ class SkysailCookieAuthenticator(
   setLogoutPath(SkysailRootApplication.LOGOUT_PATH)
   // set to false, see https://github.com/evandor/skysail/issues/13
   setOptional(optional) // we want anonymous users too?
-  setVerifier(new SimpleDelegatingVerifier())
+  setVerifier(new ShiroDelegatingVerifier())
 
   override protected def afterHandle(request: Request, response: Response) = {
     ThreadContext.remove();
