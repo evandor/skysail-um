@@ -8,7 +8,7 @@ import org.restlet.data.Form
 import io.skysail.core.app.SkysailRootApplication
 import io.skysail.um.shiro.app.ShiroUmApplication
 
-class LoginResource extends PostEntityServerResource2[Credentials] {
+class ShiroLoginResource extends PostEntityServerResource2[Credentials] {
 
   var app: ShiroUmApplication = null
 

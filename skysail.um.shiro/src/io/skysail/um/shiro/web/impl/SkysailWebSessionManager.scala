@@ -5,99 +5,102 @@ import org.apache.shiro.web.session.mgt.WebSessionManager
 import org.slf4j.LoggerFactory
 import org.apache.shiro.session.mgt.SessionContext
 import org.apache.shiro.session.Session
+import io.skysail.um.shiro.RestletUtils
+import org.apache.shiro.session.mgt.SessionKey
+import org.restlet.Request
+import org.restlet.Response
+import org.apache.shiro.session.ExpiredSessionException
+import org.apache.shiro.session.InvalidSessionException
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest
+import org.restlet.data.CookieSetting
+import org.apache.shiro.web.servlet.ShiroHttpSession
 
 class SkysailWebSessionManager extends DefaultSessionManager with WebSessionManager {
 
-    val log = LoggerFactory.getLogger(this.getClass())
+  val log = LoggerFactory.getLogger(this.getClass())
 
-    override def isServletContainerSessions() = false
+  override def isServletContainerSessions() = false
 
-    /**
-     * Stores the Session's ID, usually as a Cookie, to associate with future
-     * requests.
-     * 
-     * @param session
-     *            the session that was just {@link #createSession created}.
-     */
-    override protected def onStart( session: Session,  context: SessionContext) = {
-        val request = ScalaRestletUtils.getRequest(context);
-        val response = ScalaRestletUtils.getResponse(context);
+  /**
+   * Stores the Session's ID, usually as a Cookie, to associate with future
+   * requests.
+   *
+   * @param session
+   *            the session that was just {@link #createSession created}.
+   */
+  override protected def onStart(session: Session, context: SessionContext) = {
+    val request = RestletUtils.getRequest(context);
+    val response = RestletUtils.getResponse(context);
 
-        val sessionId = session.getId();
-        storeSessionId(sessionId, request, response);
+    val sessionId = session.getId();
+    storeSessionId(sessionId, request, response);
+  }
+
+  override def getSessionId(key: SessionKey): java.io.Serializable = {
+    var id = super.getSessionId(key);
+    if (id == null && RestletUtils.isRestlet(key)) {
+      val request = RestletUtils.getRequest(key);
+      val response = RestletUtils.getResponse(key);
+      id = getSessionId(request, response);
+    }
+    return id;
+  }
+
+  protected def getSessionId(request: Request, response: Response): java.io.Serializable = {
+    getSessionIdCookieValue(request, response);
+  }
+
+  override protected def onExpiration(s: Session, ese: ExpiredSessionException, key: SessionKey) = {
+    super.onExpiration(s, ese, key);
+    onInvalidation(key);
+  }
+
+  override protected def onInvalidation(session: Session, ise: InvalidSessionException, key: SessionKey) = {
+    super.onInvalidation(session, ise, key);
+    onInvalidation(key);
+  }
+
+  private def onInvalidation(key: SessionKey) = {
+    val request = RestletUtils.getRequest(key);
+    if (request != null) {
+      request.getAttributes().remove(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID);
+    }
+  }
+
+  override protected def onStop(session: Session, key: SessionKey) = super.onStop(session, key)
+
+  private def storeSessionId(currentId: java.io.Serializable, request: Request, response: Response) = {
+    if (currentId == null) {
+      val msg = "sessionId cannot be null when persisting for subsequent requests.";
+      throw new IllegalArgumentException(msg);
     }
 
-    override def
-    public Serializable getSessionId(SessionKey key) {
-        Serializable id = super.getSessionId(key);
-        if (id == null && RestletUtils.isRestlet(key)) {
-            Request request = RestletUtils.getRequest(key);
-            Response response = RestletUtils.getResponse(key);
-            id = getSessionId(request, response);
-        }
-        return id;
+    val cookie = createCookie();
+    val idString = currentId.toString();
+    cookie.setValue(idString);
+
+    response.getCookieSettings().add(cookie);
+  }
+
+  private def getSessionIdCookieValue(request: Request, response: Response): String = {
+    if (!(request.isInstanceOf[Request])) {
+      log.debug("Current request is not an RestletRequest - cannot get session ID cookie.  Returning null.");
+      return null;
     }
-
-    protected Serializable getSessionId(Request request, Response response) {
-        return getSessionIdCookieValue(request, response);
+    if (request.getCookies().size() == 0) {
+      return null;
     }
+    val sessionCookie = request.getCookies().getFirst(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
+    if (sessionCookie != null) sessionCookie.getValue() else null
+  }
 
-    override def
-    protected void onExpiration(Session s, ExpiredSessionException ese, SessionKey key) {
-        super.onExpiration(s, ese, key);
-        onInvalidation(key);
-    }
+  private def createCookie(): CookieSetting = {
+    val cookieSetting = new CookieSetting(ShiroHttpSession.DEFAULT_SESSION_ID_NAME, null);
+    cookieSetting.setAccessRestricted(true);
+    cookieSetting.setPath("/");
+    cookieSetting.setComment("Skysail cookie-based authentication");
+    cookieSetting.setMaxAge(300);
+    return cookieSetting;
+  }
 
-    override def
-    protected void onInvalidation(Session session, InvalidSessionException ise, SessionKey key) {
-        super.onInvalidation(session, ise, key);
-        onInvalidation(key);
-    }
-
-    private void onInvalidation(SessionKey key) {
-        Request request = RestletUtils.getRequest(key);
-        if (request != null) {
-            request.getAttributes().remove(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID);
-        }
-    }
-
-    override def
-    protected void onStop(Session session, SessionKey key) {
-        super.onStop(session, key);
-    }
-
-    private void storeSessionId(Serializable currentId, Request request, Response response) {
-        if (currentId == null) {
-            String msg = "sessionId cannot be null when persisting for subsequent requests.";
-            throw new IllegalArgumentException(msg);
-        }
-
-        CookieSetting cookie = createCookie();
-        String idString = currentId.toString();
-        cookie.setValue(idString);
-
-        response.getCookieSettings().add(cookie);
-    }
-
-    private String getSessionIdCookieValue(Request request, Response response) {
-        if (!(request instanceof Request)) {
-            logger.debug("Current request is not an RestletRequest - cannot get session ID cookie.  Returning null.");
-            return null;
-        }
-        if (request.getCookies().size() == 0) {
-            return null;
-        }
-        org.restlet.data.Cookie sessionCookie = request.getCookies().getFirst(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
-        return sessionCookie != null ? sessionCookie.getValue() : null;
-    }
-
-    private CookieSetting createCookie() {
-        CookieSetting cookieSetting = new CookieSetting(ShiroHttpSession.DEFAULT_SESSION_ID_NAME, null);
-        cookieSetting.setAccessRestricted(true);
-        cookieSetting.setPath("/");
-        cookieSetting.setComment("Skysail cookie-based authentication");
-        cookieSetting.setMaxAge(300);
-        return cookieSetting;
-    }
-  
 }
