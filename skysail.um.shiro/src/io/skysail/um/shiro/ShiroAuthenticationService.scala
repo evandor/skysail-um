@@ -1,7 +1,7 @@
 package io.skysail.um.shiro
 
 import io.skysail.api.um._
-import io.skysail.restlet.utils.ScalaLinkUtils
+import io.skysail.restlet.utils.LinkUtils
 import io.skysail.core.app.resources.LoginResource
 import io.skysail.um.shiro.authentication.SkysailCookieAuthenticator
 import io.skysail.um.shiro.app.resources.ShiroLoginResource
@@ -15,7 +15,7 @@ class ShiroAuthenticationService(provider: ShiroBasedUserManagementProvider) ext
   def getApplicationAuthenticator(context: Context, authMode: AuthenticationMode): Authenticator = getResourceAuthenticator(context, authMode)
 
   def getLoginPath(): String = {
-    val loginLink = ScalaLinkUtils.fromResource(provider.getSkysailApplication().getSkysailApplication(),
+    val loginLink = LinkUtils.fromResource(provider.getSkysailApplication().getSkysailApplication(),
       classOf[ShiroLoginResource])
     return loginLink.getUri()
   }
