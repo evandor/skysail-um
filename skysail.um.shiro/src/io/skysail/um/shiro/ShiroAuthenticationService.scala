@@ -17,7 +17,7 @@ class ShiroAuthenticationService(provider: ShiroBasedUserManagementProvider) ext
   def getLoginPath(): String = {
     val loginLink = LinkUtils.fromResource(provider.getSkysailApplication().getSkysailApplication(),
       classOf[ShiroLoginResource])
-    return loginLink.getUri()
+    return loginLink.uri
   }
 
   def getLogoutPath(): String = null

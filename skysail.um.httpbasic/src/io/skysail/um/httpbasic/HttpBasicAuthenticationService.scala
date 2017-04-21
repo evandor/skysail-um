@@ -33,7 +33,7 @@ class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManage
     try {
       val httpBasicLoginPageLink = LinkUtils.fromResource(
         userManagementProvider.getSkysailApplication().getSkysailApplication(), classOf[HttpBasicLoginPage]);
-      return httpBasicLoginPageLink.getUri();
+      return httpBasicLoginPageLink.uri;
     } catch {
       case e: Throwable => return "/" + classOf[HttpBasicUmApplication].getSimpleName() + "/v1" + SkysailRootApplication.LOGIN_PATH;
     }
