@@ -7,7 +7,6 @@ import org.restlet.security.Authenticator
 import org.restlet.Request
 import java.security.Principal
 import org.restlet.Response
-import io.skysail.restlet.utils.LinkUtils
 import io.skysail.core.app.SkysailRootApplication
 import io.skysail.um.httpbasic.app.HttpBasicUmApplication
 import io.skysail.um.httpbasic.app.HttpBasicLoginPage
@@ -30,13 +29,14 @@ class HttpBasicAuthenticationService(userManagementProvider: HttpBasicUserManage
   }
 
   def getLoginPath(): String = {
-    try {
-      val httpBasicLoginPageLink = LinkUtils.fromResource(
-        userManagementProvider.getSkysailApplication().getSkysailApplication(), classOf[HttpBasicLoginPage]);
-      return httpBasicLoginPageLink.uri;
-    } catch {
-      case e: Throwable => return "/" + classOf[HttpBasicUmApplication].getSimpleName() + "/v1" + SkysailRootApplication.LOGIN_PATH;
-    }
+      "/" + classOf[HttpBasicUmApplication].getName() + "/v1" + SkysailRootApplication.LOGIN_PATH;
+//    try {
+//      val httpBasicLoginPageLink = LinkUtils.fromResource(
+//        userManagementProvider.getSkysailApplication().getSkysailApplication(), classOf[HttpBasicLoginPage]);
+//      return httpBasicLoginPageLink.uri;
+//    } catch {
+//      case e: Throwable => return "/" + classOf[HttpBasicUmApplication].getSimpleName() + "/v1" + SkysailRootApplication.LOGIN_PATH;
+//    }
   }
 
   def getLogoutPath(): String = null
