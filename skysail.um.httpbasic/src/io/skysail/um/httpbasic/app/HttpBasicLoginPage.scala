@@ -1,13 +1,13 @@
 package io.skysail.um.httpbasic.app
 
-import io.skysail.restlet.resources.PostEntityServerResource2
+import io.skysail.restlet.resources._
 import io.skysail.core.um.domain.Credentials
 import org.restlet.resource.Get
 import io.skysail.restlet.responses.FormResponse
 import org.restlet.data.Form
 import io.skysail.core.app.SkysailRootApplication
 
-class HttpBasicLoginPage extends PostEntityServerResource2[Credentials] {
+class HttpBasicLoginPage extends PostEntityServerResource[Credentials] {
 
   var app: HttpBasicUmApplication = null
 

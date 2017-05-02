@@ -1,6 +1,6 @@
 package io.skysail.um.shiro.app.resources
 
-import io.skysail.restlet.resources.PostEntityServerResource2
+import io.skysail.restlet.resources._
 import io.skysail.core.um.domain.Credentials
 import org.restlet.resource.Get
 import io.skysail.restlet.responses.FormResponse
@@ -8,7 +8,7 @@ import org.restlet.data.Form
 import io.skysail.core.app.SkysailRootApplication
 import io.skysail.um.shiro.app.ShiroUmApplication
 
-class ShiroLoginResource extends PostEntityServerResource2[Credentials] {
+class ShiroLoginResource extends PostEntityServerResource[Credentials] {
 
   var app: ShiroUmApplication = null
 
