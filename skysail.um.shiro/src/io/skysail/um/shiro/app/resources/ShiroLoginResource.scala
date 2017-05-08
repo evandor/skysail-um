@@ -30,7 +30,7 @@ class ShiroLoginResource extends PostEntityServerResource[Credentials] {
 
   override def createEntityTemplate() = new Credentials()
 
-  override def addEntity(entity: Credentials) = {}
+  override def addEntity(entity: Credentials): Credentials = {null}
 
   override def redirectTo(): String = {
     if (app.isAuthenticated(getRequest())) {
