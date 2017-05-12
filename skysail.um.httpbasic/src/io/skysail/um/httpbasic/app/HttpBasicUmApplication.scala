@@ -1,8 +1,7 @@
 package io.skysail.um.httpbasic.app
 
 import org.osgi.service.component.annotations._
-import io.skysail.restlet.app.ApplicationProvider
-import io.skysail.restlet.app.SkysailApplication
+import io.skysail.core.app._
 import io.skysail.core.security.config.SecurityConfigBuilder
 import io.skysail.restlet.RouteBuilder
 import io.skysail.core.app.SkysailRootApplication

@@ -7,7 +7,7 @@ import io.skysail.api.um.UserManagementRepository
 import org.osgi.service.component.annotations._
 import org.osgi.service.component._
 import org.slf4j.LoggerFactory
-import io.skysail.restlet.app.ApplicationProvider
+import io.skysail.core.app.ApplicationProvider
 import org.restlet.security.Verifier
 
 @Component(

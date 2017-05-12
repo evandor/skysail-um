@@ -5,7 +5,7 @@ import org.osgi.service.component.annotations._
 import org.slf4j.LoggerFactory
 import io.skysail.api.um.AuthenticationService
 import io.skysail.api.um.AuthorizationService
-import io.skysail.restlet.app.ApplicationProvider
+import io.skysail.core.app.ApplicationProvider
 import org.apache.shiro.SecurityUtils
 import io.skysail.core.um.domain.SkysailUser
 import io.skysail.um.shiro.web.impl.SkysailWebSecurityManager
