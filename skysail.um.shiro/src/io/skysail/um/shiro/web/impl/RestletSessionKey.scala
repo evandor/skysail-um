@@ -5,8 +5,8 @@ import org.restlet.Response
 import org.restlet.Request
 
 class RestletSessionKey(sessionId: java.io.Serializable = null,
-    @transient request: Request,
-    @transient response: Response) extends DefaultSessionKey with RestletRequestPairSource {
+    /*@transient */ request: Request,
+    /* @transient */response: Response) extends DefaultSessionKey with RestletRequestPairSource {
 
   require(request != null)
   require(response != null)
