@@ -2,9 +2,9 @@ moved to skysail-core
 
 Bundle-Name: SKYSAIL :: um :: httpbasic
 
-Bundle-Version: 0.1.0.${tstamp}
+Bundle-Version: 0.1.1.${tstamp}
 
-#Include-Resource: templates=templates,webapp=webapp
+-includeresource: OSGI-OPT/src=src/
 
 -buildpath: \
 	${osgi},\

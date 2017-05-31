@@ -1,10 +1,12 @@
 Bundle-Name: SKYSAIL :: um :: shiro
 
-Bundle-Version: 0.1.0.${tstamp}
+Bundle-Version: 0.1.1.${tstamp}
 
 Include-Resource: templates=src;recursive:=true;filter:=*.st|*.stg
 
 Provide-Capability: io.skysail.api.um;type="shiro"
+
+-includeresource: OSGI-OPT/src=src/
 
 -buildpath: \
 	${osgi},\
