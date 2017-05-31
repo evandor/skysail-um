@@ -1,7 +1,7 @@
 node {
 
    stage('Preparation') {
-      git 'https://github.com/evandor/skysail-notes.git'
+      git 'https://github.com/evandor/skysail-um.git'
    }
    
    stage('build') {
