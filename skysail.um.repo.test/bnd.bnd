@@ -24,3 +24,4 @@ Bundle-Version: 0.1.1.${tstamp}
 	org.scalatest;version=3.0,\
 	org.scalactic;version=3.0,\
 	org.scala-lang.modules.scala-xml;version=1.0
+Private-Package: io.skysail.um.repo.test
