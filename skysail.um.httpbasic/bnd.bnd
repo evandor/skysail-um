@@ -2,7 +2,7 @@ moved to skysail-core
 
 Bundle-Name: SKYSAIL :: um :: httpbasic
 
-Bundle-Version: 0.2.0.${tstamp}
+Bundle-Version: 0.2.1.${tstamp}
 
 -includeresource: OSGI-OPT/src=src/
 
