@@ -1,6 +1,6 @@
 Bundle-Name: SKYSAIL :: um :: shiro
 
-Bundle-Version: 0.2.0.${tstamp}
+Bundle-Version: 0.2.1.${tstamp}
 
 Include-Resource: templates=src;recursive:=true;filter:=*.st|*.stg
 
