@@ -1,6 +1,6 @@
 package io.skysail.um.shiro.app.resources
 
-import io.skysail.restlet.resources._
+import io.skysail.core.restlet.resources._
 import io.skysail.core.um.domain.Credentials
 import org.restlet.resource.Get
 import io.skysail.restlet.responses.FormResponse

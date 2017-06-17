@@ -3,7 +3,7 @@ package io.skysail.um.httpbasic.app
 import org.osgi.service.component.annotations._
 import io.skysail.core.app._
 import io.skysail.core.security.config.SecurityConfigBuilder
-import io.skysail.restlet.RouteBuilder
+import io.skysail.core.restlet.RouteBuilder
 import io.skysail.core.app.SkysailRootApplication
 
 @Component(property = Array("name=HttpBasicUmApplication"), service=Array(classOf[ApplicationProvider]))
