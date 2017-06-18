@@ -3,7 +3,7 @@ package io.skysail.um.httpbasic.app
 import io.skysail.core.restlet.resources._
 import io.skysail.core.um.domain.Credentials
 import org.restlet.resource.Get
-import io.skysail.restlet.responses.FormResponse
+import io.skysail.core.restlet.responses.FormResponse
 import org.restlet.data.Form
 import io.skysail.core.app.SkysailRootApplication
 
