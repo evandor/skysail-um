@@ -19,16 +19,16 @@ class ShiroLoginResource extends PostEntityServerResource[Credentials] {
     return new FormResponse(getResponse(), getEntity(), SkysailRootApplication.LOGIN_PATH);
   }
 
-  override def getEntity() = new Credentials()
+  override def getEntity() = new Credentials(None,null,null)
 
   def getData(form: Form): Credentials = {
     if (form == null) {
-      return new Credentials();
+      return new Credentials(None,null,null);
     }
-    return new Credentials(form.getFirstValue("username"), form.getFirstValue("password"));
+    return new Credentials(None,form.getFirstValue("username"), form.getFirstValue("password"));
   }
 
-  override def createEntityTemplate() = new Credentials()
+  override def createEntityTemplate() = new Credentials(None,null,null)
 
   override def addEntity(entity: Credentials): Credentials = {null}
 
