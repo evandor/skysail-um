@@ -11,7 +11,8 @@ import io.skysail.um.shiro.app.resources.ShiroLoginResource
 class ShiroUmApplication extends SkysailApplication(classOf[ShiroUmApplication].getName()) {
 
 	override def defineSecurityConfig(securityConfigBuilder: SecurityConfigBuilder ) = 
-    securityConfigBuilder.authorizeRequests().startsWithMatcher(SkysailRootApplication.LOGIN_PATH).permitAll();
+    //securityConfigBuilder.authorizeRequests().startsWithMatcher(SkysailRootApplication.LOGIN_PATH).permitAll();
+	  securityConfigBuilder.authorizeRequests().startsWithMatcher("").permitAll();
 	
 
 	override def attach() = {
