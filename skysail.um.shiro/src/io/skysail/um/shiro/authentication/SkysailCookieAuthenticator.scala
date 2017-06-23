@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import org.restlet.routing.Filter
 import org.apache.shiro.SecurityUtils
 import org.restlet.data.CookieSetting
+import io.skysail.core.um.domain.Credentials
 
 class SkysailCookieAuthenticator(
     context: Context,
@@ -21,8 +22,8 @@ class SkysailCookieAuthenticator(
 
   val log = LoggerFactory.getLogger(this.getClass())
 
-  setIdentifierFormName("username")
-  setSecretFormName("password")
+  setIdentifierFormName(classOf[Credentials].getName + "|username")
+  setSecretFormName(classOf[Credentials].getName + "|password")
   setLoginFormPath("/v1/_login")
   setLoginPath("/v1/_login")
   setLogoutPath(SkysailRootApplication.LOGOUT_PATH)

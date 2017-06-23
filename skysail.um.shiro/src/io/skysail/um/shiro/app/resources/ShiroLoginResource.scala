@@ -15,8 +15,9 @@ class ShiroLoginResource extends PostEntityServerResource[Credentials] {
   override protected def doInit() = { app = getApplication().asInstanceOf[ShiroUmApplication] }
 
   @Get("htmlform")
-  def createForm(): FormResponse[Credentials] = {
-    return new FormResponse(getResponse(), getEntity(), SkysailRootApplication.LOGIN_PATH);
+  override def getPostTemplate(): FormResponse[Credentials] = {
+    val appPath = getModel().appPath()
+    return new FormResponse(getResponse(), getEntity(), appPath + SkysailRootApplication.LOGIN_PATH);
   }
 
   override def getEntity() = new Credentials(None,null,null)
