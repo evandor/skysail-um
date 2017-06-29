@@ -47,6 +47,7 @@ runsystempackages:\
     javax.xml.transform.stax,\
     sun.reflect,\
     sun.misc,\
+    sun.net,\
     org.ietf.jgss,\
     netscape.javascript,\
     sun.nio.ch
